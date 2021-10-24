@@ -1,25 +1,25 @@
 #include<iostream>
+#include<string>
 using namespace std;
 class ngaysinh
 {
-	private:
+	protected:
 	    int ngay;
 	    int thang;
 	    int nam;
-	public:
-	    void nhap_ns();
-	    void xuat_ns();
 };
 class nguoi : public ngaysinh
 {
     private:
-        int masv;
-        char ten[30];
+        int msv;
+        string ten;
         ngaysinh ns;
-        int gt;
+        string gt;
     public:
         void nhap_nguoi();
         void xuat_nguoi();
+        void nhap_ns();
+	    void xuat_ns();
 };
 class diem : public nguoi
 {
@@ -45,21 +45,48 @@ class hocluc: public diem
  		void hocluc1();
  		void sapxephocluc();
 };
-void ngaysinh::nhap_ns()
+void nguoi::nhap_ns()
 {
 	char ch;
 	cout<<"Nhap vao ngay, thang, nam (dd/mm/yyyy):  ";
 	cin>>ngay>>thang>>nam;
 }
-void ngaysinh::xuat_ns()
+void nguoi::xuat_ns()
 {
 	cout<<ngay<<"/"<<thang<<"/"<<nam<<endl;
 }
+void nguoi::nhap_nguoi(){
+	cout<<"\nNhap ho ten sinh vien: ";
+	getline(cin,ten);
+	fflush(stdin);
+	cout<<"\nNhap ma so sinh vien: ";
+	cin>>msv;
+	fflush(stdin);
+	cout<<"\nNhap gioi tinh: ";
+	getline(cin,gt);
+}
+void nguoi::xuat_nguoi(){
+	cout<<"\nThong tin sinh vien ban vua nhap la: ";
+	cout<<"\nHo va ten: "<<ten;
+	cout<<"\nMa sinh vien: "<<msv;
+	cout<<"\nGioi tinh: "<<gt;
+}
 int main()
 {
-	cout<<"\n*******************************************************";
+	cout<<"\n***********************MENU****************************";
     cout<<"\n*                 QUAN LY SINH VIEN                   *";
     cout<<"\n*                                                     *";
+    cout<<"\n*  I. QUAN LY SINH VIEN                               *";
+    cout<<"\n*                                                     *";
+    cout<<"\n*  1. Nhap vao sinh vien                              *";
+    cout<<"\n*  2. Tim kiem theo ma so sinh vien                   *";
+    cout<<"\n*  3. Tim kiem theo ten sinh vien                     *";
+    cout<<"\n*  4. Danh sach sinh vien                             *";
+    cout<<"\n*  5. Xoa                                             *";
+    cout<<"\n\Nhap tuy chon: ";
+    nguoi ns;
+    ns.nhap_nguoi();
+    ns.xuat_nguoi();
 }
 
 
