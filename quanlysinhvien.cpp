@@ -18,7 +18,9 @@ class nguoi : public ngaysinh
     public:
         void nhap_nguoi();
         void xuat_nguoi();
-        void timkiem_msv();
+    	void themsv();
+    	void xoasv();
+    	void timkiemsv();
 };
 class diem : public nguoi
 {
