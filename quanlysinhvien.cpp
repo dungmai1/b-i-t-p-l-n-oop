@@ -59,53 +59,50 @@ void nguoi::nhap_nguoi(){
 	cin>>tuoi;
 }
 void nguoi::xuat_nguoi(){
-	int n;
-	cout <<"\n\STT\tHo va ten\tMa sinh vien\tGioi tinh\tNgay/Thang/Nam\tTuoi\tDTB\tDRL\tDC\tHoc luc";
-	for(int i = 0; i < n; i++) {
-        cout<<"\n"<< i + 1;
-        cout<<"\t"<<ten;
-        cout<<"\t\t"<<msv;
-        cout<<"\t\t"<<gt;
-        cout<<"\t\t"<<ngay<<"/"<<thang<<"/"<<nam;
-        cout<<"\t\t"<<tuoi;
-	}
+    cout<<"\t"<<ten;
+    cout<<"\t\t"<<msv;
+    cout<<"\t\t"<<gt;
+    cout<<"\t\t"<<ngay<<"/"<<thang<<"/"<<nam;
+    cout<<"\t\t"<<tuoi;
 }
 void nguoi::timkiem_msv(){
 }
 int main()
 {
-	int n,x;
-	nguoi ns;
+	int n,key;
+	nguoi a[200];
+	system("cls");
 	cout<<"\n***********************MENU****************************";
     cout<<"\n*                 QUAN LY SINH VIEN                   *";
     cout<<"\n*                                                     *";
     cout<<"\n*  I. QUAN LY SINH VIEN                               *";
     cout<<"\n*                                                     *";
     cout<<"\n*  1. Nhap vao sinh vien                              *";
-    cout<<"\n*  2. Tim kiem theo ma so sinh vien                   *";
-    cout<<"\n*  3. Tim kiem theo ten sinh vien                     *";
-    cout<<"\n*  4. Danh sach sinh vien                             *";
-    cout<<"\n*  5. Xoa                                             *";
-    cout<<"\n\Nhap tuy chon: ";
-    cin>>n;
-    switch(n){
-    		case (1):{
-    			cout<<"Nhap so luong sinh vien muon nhap vao: ";
-    			cin>>x;
-    			for( int i = 0; i < x ; i++){
-    				cout<<"\tThong tin sinh vien thu "<<i+1;
-    				ns.nhap_nguoi();
-						}
-    			ns.xuat_nguoi();
-            		}
-            		break;
-            case(2):{
-				ns.timkiem_msv();
-			}		
+    cout<<"\n*  2. Xuat sinh vien vua nhap                         *";
+    cout<<"\n*  3. Tim kiem theo ma so sinh vien                   *";
+    cout<<"\n*  4. Tim kiem theo ten sinh vien                     *";
+    cout<<"\n*  5. Danh sach sinh vien                             *";
+    cout<<"\n*  6. Xoa                                             *";
+    cout<<"\nNhap tuy chon: ";
+    cin>>key;
+    switch(key){
+    	case (1):
+    		cout<<"So sinh vien ban muon nhap vao la: ";
+    		cin>>n;
+            for (int i =0; i<n; i++){
+                cout << "\nThong tin sinh vien thu " << i + 1 << "\n";
+                a[i].nhap_nguoi();
+	            }
+	        cout <<"\nSTT\tHo va ten\tMa sinh vien\tGioi tinh\tNgay/Thang/Nam\tTuoi\tDTB\tDRL\tDC\tHoc luc";    
+	        for(int i=0; i<n;i++){
+	            cout<<"\n"<< i + 1;
+				a[i].xuat_nguoi();
+			}
+	    	break;
+	    case (2):
+	 ; 	
 	}
-
-
-
 }
+
 
 
