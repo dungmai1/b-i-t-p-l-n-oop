@@ -1,33 +1,32 @@
 #include<iostream>
 #include<string>
 using namespace std;
-class ngaysinh
-{
-	protected:
-	    int ngay;
-	    int thang;
-	    int nam;
-};
-class nguoi : public ngaysinh
+class sinhvien
 {
     private:
         int msv;
         string ten;
         string gt;
         int tuoi;
+        int ngay;
+	    int thang;
+	    int nam;
     public:
-        void nhap_nguoi();
-        void xuat_nguoi();
+        void nhap_sinhvien();
+        void xuat_sinhvien();
     	void themsv();
     	void xoasv();
     	void timkiemsv();
+    	string ten1(){
+    		return ten;
+		}
 };
-class diem : public nguoi
+class diem : public sinhvien
 {
     private:
         float dtb;
-        float drl;
         float dcong;
+        float drl;
     public:
         diem(){}
         void nhap_diem();
@@ -46,7 +45,18 @@ class hocluc: public diem
  		void hocluc1();
  		void sapxephocluc();
 };
-void nguoi::nhap_nguoi(){
+class dkhocphan
+{
+	private:
+		int tinchi;
+		string monhoc;
+		int sotinchi;
+	public:
+		void nhapmonhoc();
+		void tinhtienhoc();
+		void tongtienhoc();
+};
+void sinhvien::nhap_sinhvien(){
 	cin.ignore();
 	cout<<"\nNhap ho ten sinh vien: ";
 	getline(cin,ten);
@@ -60,20 +70,20 @@ void nguoi::nhap_nguoi(){
 	cout<<"\nNhap tuoi: ";
 	cin>>tuoi;
 }
-void nguoi::xuat_nguoi(){
+void sinhvien::xuat_sinhvien(){
     cout<<"\t"<<ten;
     cout<<"\t\t"<<msv;
     cout<<"\t\t"<<gt;
     cout<<"\t\t"<<ngay<<"/"<<thang<<"/"<<nam;
     cout<<"\t\t"<<tuoi;
 }
-void nguoi::timkiem_msv(){
+void sinhvien::timkiemsv(){
 }
 int main()
 {
 	int n,key;
-	nguoi a[200];
-	system("cls");
+	string ten1;
+	sinhvien a[200], r;
 	cout<<"\n***********************MENU****************************";
     cout<<"\n*                 QUAN LY SINH VIEN                   *";
     cout<<"\n*                                                     *";
@@ -93,16 +103,23 @@ int main()
     		cin>>n;
             for (int i =0; i<n; i++){
                 cout << "\nThong tin sinh vien thu " << i + 1 << "\n";
-                a[i].nhap_nguoi();
+                a[i].nhap_sinhvien();
 	            }
 	        cout <<"\nSTT\tHo va ten\tMa sinh vien\tGioi tinh\tNgay/Thang/Nam\tTuoi\tDTB\tDRL\tDC\tHoc luc";    
 	        for(int i=0; i<n;i++){
 	            cout<<"\n"<< i + 1;
-				a[i].xuat_nguoi();
-			}
+				a[i].xuat_sinhvien();
+			} 
 	    	break;
 	    case (2):
-	 ; 	
+	    	cout<<"Nhap ten ban muon tim kiem: ";
+	    	getline(cin,ten1);
+	    	for(int i =0 ; i<n ; i++){
+	    		if (a[i].ten1()==ten1)
+        		r = a[i];
+            	ten1=a[i].ten1();  
+			}
+	 		break; 	
 	}
 }
 
