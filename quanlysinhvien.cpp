@@ -1,6 +1,6 @@
 #include<iostream>
 #include<string>
-#include<iomanip> 
+#include<iomanip>
 using namespace std;
 class sinhvien
 {
@@ -23,8 +23,19 @@ void sinhvien::nhap_sinhvien(){
 	fflush(stdin);
 	cout<<"\nNhap gioi tinh: ";
 	getline(cin,gt);
-	cout<<"\nNhap vao ngay, thang, nam (dd/mm/yyyy):  ";
-	cin>>ngay>>thang>>nam;
+	cout<<"\nNhap vao ngay, thang, nam (dd/mm/yyyy):  "<<endl;
+	do{
+		cout<<"Nhap ngay: ";
+		cin>>ngay;
+	}while(ngay<0||ngay>31);
+	do{
+		cout<<"Nhap thang: ";
+		cin>>thang;
+	}while(thang<0||thang>12);
+	do{
+		cout<<"Nhap nam: ";
+		cin>>nam;
+	}while(nam<1990||nam>2021);
 	cout<<"\nNhap tuoi: ";
 	cin>>tuoi;
 }
@@ -32,7 +43,7 @@ void sinhvien::xuat_sinhvien(){
 	cout<<"\t"<<left<<setw(30)<<ten<<"\t";
     cout<<left<<setw(12)<<msv<<"\t";
     cout<<left<<setw(9)<<gt<<"\t";
-    cout<<left<<setw(0)<<ngay<<"/"<<thang<<"/"<<nam<<left<<setw(17)<<"\t";
+    cout<<left<<setw(0)<<ngay<<"/"<<thang<<"/"<<nam<<left<<setw(9)<<"\t";
     cout<<left<<setw(5)<<tuoi<<"\t";
 }
 class diem : public sinhvien{
@@ -41,7 +52,15 @@ class diem : public sinhvien{
 		~diem();
 		void nhapd();
 		void xuatd();
+		int getdtb(){
+			return dtb;
+		};
+		void setdtb(int);
+		void xeploai();	
 };
+void diem::setdtb(int dtb){
+	this->dtb=dtb;
+}
 diem::diem(){
 	dtb = 0;
 	drl = 0;
@@ -61,6 +80,20 @@ void diem::xuatd(){
     cout<<left<<setw(6)<<dtb<<"\t";
     cout<<left<<setw(5)<<dc<<"\t";
 	cout<<left<<setw(5)<<drl<<"\t";
+}
+void diem::xeploai(){
+	if(dtb>=8.0){
+		cout<<left<<setw(15)<<"Gioi"<<endl;	
+	}
+	else if(dtb >=7.0){
+		cout<<left<<setw(15)<<"Kha"<<endl;	
+	}
+	else if(dtb>=5.0){
+		cout<<left<<setw(15)<<"TB"<<endl;	
+	}	
+	else if  (dtb < 5.0){
+		cout<<left<<setw(15)<<"Yeu"<<endl;	
+	}	
 }
 class dkhocphan : public sinhvien  
 {
@@ -126,6 +159,7 @@ int main()
 	sinhvien a[200];
 	dkhocphan dkhp[200];
 	diem d[200];
+	sinhvien sv;
 	bool c = true;
 	while(c){
 	cout<<"\n***********************MENU****************************";
@@ -135,11 +169,15 @@ int main()
     cout<<"\n*                                                     *";
     cout<<"\n*  1. Nhap vao sinh vien                              *";
     cout<<"\n*  2. Xuat sinh vien vua nhap                         *";
+    cout<<"\n*  3. Xep loai sinh vien theo DTB                     *";
     cout<<"\n*                                                     *";
     cout<<"\n*  II. Dang ki hoc phan                               *";
     cout<<"\n*                                                     *";
-    cout<<"\n*  3. Nhap hoc phan muon dang ki                      *";
-    cout<<"\n*  4. In ra man hinh tong hoc phi                     *"; 
+    cout<<"\n*  4. Nhap hoc phan muon dang ki                      *";
+    cout<<"\n*  5. In ra man hinh tong hoc phi                     *";
+    cout<<"\n*                                                     *";
+    cout<<"\n*  III. Dang ki hoc phan                              *";
+    cout<<"\n*                                                     *";
     cout<<"\nNhap tuy chon: ";     
 	cin>>key; 
     switch(key){
@@ -165,14 +203,25 @@ int main()
 			system("cls");
 			break;
 		case (3):
+			cout<<left<<setw(3)<<"STT"<<"\t"<<left<<setw(30)<<"Ho va Ten"<<"\t"<<left<<setw(12)<<"MSV"<<"\t"<<left<<setw(9)<<"Gioi tinh"<<"\t"<<left<<setw(20)<<"Ngay/Thang/Nam"<<"\t"<<left<<setw(5)<<"Tuoi"<<"\t"<<left<<setw(15)<<"Xep loai"<<endl;
+			for(int i=0; i<n;i++){
+				cout<<i+1;
+				a[i].xuat_sinhvien();
+				d[i].xeploai();
+			}
+			system("pause>null");
+			system("cls");
+			break;
+		case (4):
 			cout<<"Nhap so hoc phan muon dang ki: ";
 			cin>>sohocphan;
 	    	for(int i=0; i<sohocphan;i++){
+	    		cout<<endl; 
 	    		dkhp[i].nhaphocphan();
 			}
 	       	system("cls");
 			break;
-	    case (4):
+	    case (5):
 	    	cout<<left<<setw(3)<<"STT"<<"\t"<<left<<setw(30)<<"Ho va Ten"<<"\t"<<left<<setw(12)<<"MSV"<<"\t"<<left<<setw(9)<<"Gioi tinh"<<"\t"<<left<<setw(20)<<"Ngay/Thang/Nam"<<"\t"<<left<<setw(5)<<"Tuoi"<<"\t"<<left<<setw(10)<<"Mon hoc"<<"\t"<<left<<setw(10)<<"Tin Chi"<<"\t"<<left<<setw(15)<<"Ma hoc phan"<<"\t"<<left<<setw(15)<<"Hoc Phi"<<"\t"<<left<<setw(15)<<"Tong Tien"<<endl;
 	    	for(int i=0; i<sohocphan;i++){
 	    		cout<<i+1;
@@ -183,9 +232,9 @@ int main()
 			system("pause>null");
 			system("cls");
 			break;
-		case (5):
-			break;
+
 		case (6):
+
 			break;
 		case (7):
 			break;
