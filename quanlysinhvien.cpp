@@ -2,18 +2,8 @@
 #include<string>
 #include<iomanip>
 #include<windows.h>
-#include <fstream>
-#pragma GCC diagnostic ignored "-Wwrite-strings"
-using namespace std;
-class Ham_ao{
-	public:
-		virtual void nhapd()=0;
-		virtual void xuatd()=0;
-		virtual float getdtb()=0;
-		virtual void setdtb(float)=0;
-		virtual void xeploai()=0;
-};
-class diem: public Ham_ao {
+#include"dohoa.h"
+class diem{
 	protected:
 		float dtb,dc,drl;
 	public:
@@ -21,13 +11,13 @@ class diem: public Ham_ao {
 		~diem();
 		void nhapd();
 		void xuatd();
-		void xeploai();
 		float getdtb();
 		void setdtb(float);
+		void xeploai();
 		float getdc();
 		void setdc(float);	
 		float getdrl();
-		void setdrl(float);		
+		void setdrl(float);
 };
 void diem::setdtb(float dtb){
 	this->dtb = dtb;
@@ -95,10 +85,11 @@ class dkhocphan {
 		void nhaphocphan();
 		void xuathocphan();
 		void tinhtienhoc();
+		void xoahocphan();
 };
 void dkhocphan::nhaphocphan(){
 	fflush(stdin);
-	cout<<"Nhap so hoc phan: ";
+	cout<<"Nhap so hoc phan muon dang ki : ";
 	cin>>sohocphan;
 	for(int i =0; i<sohocphan; i++){
 		fflush(stdin);
@@ -109,7 +100,7 @@ void dkhocphan::nhaphocphan(){
 		fflush(stdin);
 		cout<<"Ma hoc phan: ";
 		getline(cin,hocphans[i].mhp);
-		cout<<"Hoc phi: ";
+		cout<<"Hoc phi (so tien 1 tin chi): ";
 		cin>>hocphans[i].hocphi;	
 	}
 }
@@ -119,6 +110,7 @@ void dkhocphan::xuathocphan(){
 	    cout<<left<<setw(10)<<hocphans[i].sotinchi<<"\t";
 		cout<<left<<setw(15)<<hocphans[i].mhp<<"\t";
 		cout<<left<<setw(15)<<hocphans[i].hocphi<<"\t"<<endl;
+		cout<<left<<setw(3)<<"   "<<"\t"<<left<<setw(30)<<"                              "<<"\t"<<left<<setw(15)<<"               "<<"\t"<<left<<setw(9)<<"         "<<"\t"<<left<<setw(20)<<"                    "<<"\t"<<left<<setw(5)<<"     "<<"\t";
 	}	
 }
 void dkhocphan::tinhtienhoc(){
@@ -127,6 +119,17 @@ void dkhocphan::tinhtienhoc(){
 		sotien += (hocphans[i].sotinchi*hocphans[i].hocphi);
 	}
 	cout<<"Tong so tien cua dang ki hoc phan la: "<<sotien<<endl;
+}
+void dkhocphan::xoahocphan(){
+	string hp;
+	fflush(stdin);
+	cout<<"Nhap ten hoc phan muon xoa: ";
+	getline(cin,hp);
+	for(int i = 0; i<sohocphan; i++){
+		if(hocphans[i].monhoc==hp)
+			hocphans[i] = hocphans[i+1];
+	}
+	sohocphan--;
 }
 class sinhvien : public dkhocphan,public diem 
 {
@@ -138,10 +141,6 @@ class sinhvien : public dkhocphan,public diem
     public:
         void nhap_sinhvien();
         void xuat_sinhvien();
-        void intro();
-        void loading();
-        void animation(char q[]);
-        void thanhviennhom();
         string getten();
         void setten(string);
         string getgt();
@@ -156,7 +155,6 @@ class sinhvien : public dkhocphan,public diem
         void setnam(int);
         int gettuoi();
         void settuoi(int);
-		
 };
 int sinhvien::gettuoi(){
 	return tuoi;
@@ -239,63 +237,24 @@ void sinhvien::xuat_sinhvien(){
     cout<<left<<setw(0)<<ngay<<"/"<<thang<<"/"<<nam<<left<<setw(9)<<"\t";
     cout<<left<<setw(5)<<tuoi<<"\t";
 }
-
-void sinhvien::loading(){
-	char x=219;
-	cout << "Loading ";
-    for(int i=0;i<=40;i++){
-    Sleep(40);
-    cout<<x;
-	}
-}
-void sinhvien::animation(char q[100]){
-	for ( int i =0 ; q[i]!='\0'; i++){
-		for (double k=0; k<12000000; k++);
-		cout<<q[i];
-	}
-}
-void sinhvien::thanhviennhom(){
-	animation("\tCHUONG TRINH QUAN LY SINH VIEN NHOM 9");
-	cout<<"\n                                                          ";
-	animation("\nThanh vien nhom:    Mai Danh Dung       6151071038 ");
-	cout<<"\n                                                          ";
-	animation("\n                    Nguyen Nhat Truong  6151071110 ");
-	cout<<"\n                                                          ";
-	animation("\n                    Tran Hoang Trieu    6151071107 ");
-	cout<<endl;
-}
-void sinhvien::intro(){
-	thanhviennhom();
-	system("pause");
-	cout<<"\t";
-	loading();
-	system("cls");
-}
-
 void display_diem(){
+	duong_thang();
 	cout<<left<<setw(3)<<"STT"<<"\t"<<left<<setw(30)<<"Ho va Ten"<<"\t"<<left<<setw(12)<<"MSV"<<"\t"<<left<<setw(9)<<"Gioi tinh"<<"\t"<<left<<setw(20)<<"Ngay/Thang/Nam"<<"\t"<<left<<setw(5)<<"Tuoi"<<"\t"<<left<<setw(6)<<"DiemTB"<<"\t"<<left<<setw(5)<<"DiemC"<<"\t"<<left<<setw(5)<<"DiemRL"<<endl;
-
+	duong_thang();
 }
 void display_xeploai(){
+	duong_thang1();
 	cout<<left<<setw(3)<<"STT"<<"\t"<<left<<setw(30)<<"Ho va Ten"<<"\t"<<left<<setw(12)<<"MSV"<<"\t"<<left<<setw(9)<<"Gioi tinh"<<"\t"<<left<<setw(20)<<"Ngay/Thang/Nam"<<"\t"<<left<<setw(5)<<"Tuoi"<<"\t"<<left<<setw(6)<<"DiemTB"<<"\t"<<left<<setw(5)<<"DiemC"<<"\t"<<left<<setw(5)<<"DiemRL"<<"\t"<<left<<setw(15)<<"Xep loai"<<endl;
-
+	duong_thang1();
 }
 void display(){
 	cout<<left<<setw(3)<<"STT"<<"\t"<<left<<setw(30)<<"Ho va Ten"<<"\t"<<left<<setw(15)<<"MSV"<<"\t"<<left<<setw(9)<<"Gioi tinh"<<"\t"<<left<<setw(20)<<"Ngay/Thang/Nam"<<"\t"<<left<<setw(5)<<"Tuoi"<<endl;
-
 }
 void display_dkhocphan(){
-	cout<<left<<setw(10)<<"Mon hoc"<<"\t"<<left<<setw(10)<<"Tin Chi"<<"\t"<<left<<setw(15)<<"Ma hoc phan"<<"\t"<<left<<setw(15)<<"Hoc Phi"<<endl;
+	duong_thangdkhocphan();
+	cout<<left<<setw(3)<<"STT"<<"\t"<<left<<setw(30)<<"Ho va Ten"<<"\t"<<left<<setw(15)<<"MSV"<<"\t"<<left<<setw(9)<<"Gioi tinh"<<"\t"<<left<<setw(20)<<"Ngay/Thang/Nam"<<"\t"<<left<<setw(5)<<"Tuoi"<<"\t"<<left<<setw(10)<<"Mon hoc"<<"\t"<<left<<setw(10)<<"Tin Chi"<<"\t"<<left<<setw(15)<<"Ma hoc phan"<<"\t"<<left<<setw(15)<<"Hoc Phi"<<endl;
+	duong_thangdkhocphan();
 }
-void gotoxy(int x, int y)
-{
-	static HANDLE h = NULL;  
-	if(!h)
-		h = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD c = { x, y };  
-	SetConsoleCursorPosition(h,c);
-}
-
 class Node{
 	private:
 		sinhvien data;
@@ -313,16 +272,17 @@ class SList{
 		~SList();
 		Node *CreateNode(sinhvien  sv);
 		void Add();
-		void XuatDS();
-		void DeleteFirst();
-		void DeleteLast();
+		void xuat();
+		void XoaDau();
+		void XoaCuoi();
 		void DeleteSV();
 		void timkiem_msv();
 		void timkiem_ten();
 		void Xeploai();
 		void DKHP();
 		void InDKHP();
-		void ghifile();		
+		void ghifile();
+		void xoahp();	
 };
 SList::SList(){
 	Head = NULL;
@@ -331,7 +291,6 @@ SList::SList(){
 SList::~SList(){
 }
 Node* SList::CreateNode(sinhvien sv){
-	size++;
 	Node* p =new Node;
 	p->data = sv;
 	p->next = NULL;
@@ -352,13 +311,13 @@ void SList::Add(){
 		Tail =p;
 	}
 }
-void SList::DeleteFirst(){
+void SList::XoaDau(){
 	Node *p = Head;
 	Head = Head->next;
 	delete p;
 	cout <<"Xoa thanh cong"<<endl;
 }
-void SList::DeleteLast(){
+void SList::XoaCuoi(){
 	Node *p;
 	for( Node *k = Head; k!= NULL; k = k->next){
 		if(k == Tail){		
@@ -381,11 +340,11 @@ void SList::DeleteSV(){
 	cout <<"\t\tNhap ten sinh vien muon xoa: ";
 	getline(cin,xoa);
 	if(Head->data.getten() == xoa ){
-		DeleteFirst();
+		XoaDau();
 		return;
 	}	
 	if(Tail->data.getten() == xoa){
-		DeleteLast();
+		XoaCuoi();
 		return;
 	}
 	Node *p;
@@ -415,6 +374,8 @@ void SList::timkiem_msv(){
 			cout<<i++;
 			p->data.xuat_sinhvien();
 			p->data.xuatd();
+			cout<<endl;
+			duong_thang();
 		}
 	}
 }
@@ -434,6 +395,8 @@ void SList::timkiem_ten(){
 			cout<<i++;
 			p->data.xuat_sinhvien();
 			p->data.xuatd();
+			cout<<endl;
+			duong_thang();
 		}
 	}
 }
@@ -442,14 +405,14 @@ void SList::Xeploai(){
 		cout <<"Chua co sinh vien"<<endl;
 		return;
 	}
-	sinhvien sv;
 	int i=1;
 	display_xeploai();
 	for(Node *p = Head; p != NULL; p = p->next ){
 		cout<<i++;
 		p->data.xuat_sinhvien();
 		p->data.xuatd();
-		sv.xeploai();
+		p->data.xeploai();
+		duong_thang1();
 	}
 }
 void SList::DKHP(){
@@ -469,16 +432,38 @@ void SList::DKHP(){
 	}
 }
 void SList::InDKHP(){
+	if(Head == Tail && Head == NULL){
+		cout <<"Chua co sinh vien"<<endl;
+		return;
+	}
+	int i=1;
 	display_dkhocphan();
 	for(Node *p = Head; p != NULL ; p = p->next){
+		cout<<i++;
+		p->data.xuat_sinhvien();
 		p->data.xuathocphan();
-		cout<<endl;
 		p->data.tinhtienhoc();
-		cout<<endl;
+		duong_thangdkhocphan();	
+	}
+}
+void SList::xoahp(){
+	if(Head == Tail && Head == NULL){
+		cout <<"Chua co sinh vien"<<endl;
+		return;
+	}
+	string huydkhp;
+	fflush(stdin);
+	cout<<"Nhap ten sinh vien muon huy dang ki hoc phan: ";
+	getline(cin,huydkhp);
+	for(Node *p = Head; p != NULL; p = p->next ){
+		if( p->data.getten()== huydkhp ){
+			p->data.xoahocphan();
+		}	
 	}
 }
 void SList::ghifile(){
 	sinhvien sv;
+	int i=1;
 	fstream f;
 	if (!f.eof()){
 		f.open("sinhvien.txt", ios::app);
@@ -498,14 +483,18 @@ void SList::ghifile(){
 			f<<"Diem trung binh: "<<p->data.getdtb()<<endl;
 			f<<"Diem cong: "<<p->data.getdc()<<endl;
 			f<<"Diem ren luyen: "<<p->data.getdrl()<<endl;
+			f<<"-------------------------------------------"<<endl;
 			f.seekp(1);
 			f<<endl;
-			cout<<endl;
-			cout<<"\t\t\tDa ghi vao file!!!"<<endl;
+			cout<<"\tDa ghi sinh vien so "<<i++<<" vao file!!!"<<endl;
 		}
 	}
 }
-void SList::XuatDS(){
+void SList::xuat(){
+	if(Head == Tail && Head == NULL){
+		cout <<"Chua co sinh vien"<<endl;
+		return;
+	}
 	int i=1;
 	display_diem();
 	for(Node *p = Head; p != NULL ; p = p->next){
@@ -513,50 +502,55 @@ void SList::XuatDS(){
 		p->data.xuat_sinhvien();
 		p->data.xuatd();
 		cout<<endl;
+		duong_thang();
 	}
 }
 int main()
 {
-	int n,key, sohocphan;
-	sinhvien sv;
+	int n,key;
 	SList list;
-	system("color 0A ");
-	sv.intro();
+	sinhvien sv;
+	intro();
 	bool c = true;
 	while(c){
-	gotoxy(50,0);  cout<<"@@@@@@@@@@@@@@@@@@@@@@ MENU @@@@@@@@@@@@@@@@@@@@@@@@@@@";
-    gotoxy(50,1);  cout<<"|-----------------------------------------------------|";
-    gotoxy(50,2);  cout<<"|                 QUAN LY SINH VIEN                   |";
-    gotoxy(50,3);  cout<<"|-----------------------------------------------------|";
-    gotoxy(50,4);  cout<<"|  I.   SINH VIEN                                     |";
-    gotoxy(50,5);  cout<<"|-----------------------------------------------------|";
-    gotoxy(50,6);  cout<<"|  1. Nhap vao sinh vien                              |";
-    gotoxy(50,7);  cout<<"|-----------------------------------------------------|";
-    gotoxy(50,8);  cout<<"|  2. Xuat sinh vien vua nhap                         |";
-    gotoxy(50,9);  cout<<"|-----------------------------------------------------|";
-    gotoxy(50,10); cout<<"|  3. Xep loai sinh vien theo DTB                     |";
-    gotoxy(50,11); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,12); cout<<"|  4. Tim kiem sinh vien bang ma sinh vien            |";
-    gotoxy(50,13); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,14); cout<<"|  5. Tim kiem sinh vien bang ten                     |";
-    gotoxy(50,15); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,16); cout<<"|  6. Them sinh vien                                  |";
-    gotoxy(50,17); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,18); cout<<"|  7. Cap nhat thong tin sinh vien                    |";
-    gotoxy(50,19); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,20); cout<<"|  8. Xoa sinh vien                                   |";
-    gotoxy(50,21); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,22); cout<<"|  9. Ghi file                                        |";
-    gotoxy(50,23); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,24); cout<<"|  II.  DANG KI HOC PHAN                              |";
-    gotoxy(50,25); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,26); cout<<"|  10. Nhap hoc phan muon dang ki                     |";
-    gotoxy(50,27); cout<<"|-----------------------------------------------------|";
-    gotoxy(50,28); cout<<"|  11. In ra man hinh tong hoc phi                    |";
-    gotoxy(50,29); cout<<"|-----------------------------------------------------|";
-	gotoxy(50,30); cout<<"|  12. Thoat chuong trinh                             |";
-	gotoxy(50,31); cout<<"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@";
-    gotoxy(50,32); cout<<"Nhap tuy chon: ";     
+	BangMenu(0,0);
+	textcolor(10);
+	gotoxy(2,1); 	cout<<"************************************************************";
+    gotoxy(2,2); 	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,3); 	cout<<"|                    QUAN LY SINH VIEN                     |";
+    gotoxy(2,4); 	cout<<"|----------------------------------------------------------|";
+   	gotoxy(2,5); 	cout<<"|  I.   SINH VIEN                                          |";
+    gotoxy(2,6);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,7); 	cout<<"|  1. Nhap vao sinh vien                                   |";
+    gotoxy(2,8);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,9); 	cout<<"|  2. Xuat sinh vien vua nhap                              |";
+    gotoxy(2,10);   cout<<"|----------------------------------------------------------|";
+    gotoxy(2,11); 	cout<<"|  3. Xep loai sinh vien theo DTB                          |";
+    gotoxy(2,12);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,13);	cout<<"|  4. Tim kiem sinh vien bang ma sinh vien                 |";
+    gotoxy(2,14);   cout<<"|----------------------------------------------------------|";
+    gotoxy(2,15);	cout<<"|  5. Tim kiem sinh vien bang ten                          |";
+    gotoxy(2,16);   cout<<"|----------------------------------------------------------|";
+    gotoxy(2,17);	cout<<"|  6. Them sinh vien                                       |";
+    gotoxy(2,18);   cout<<"|----------------------------------------------------------|";
+    gotoxy(2,19);	cout<<"|  7. Cap nhat thong tin sinh vien                         |";
+    gotoxy(2,20);   cout<<"|----------------------------------------------------------|";
+    gotoxy(2,21);	cout<<"|  8. Xoa sinh vien                                        |";
+    gotoxy(2,22);   cout<<"|----------------------------------------------------------|";
+    gotoxy(2,23);	cout<<"|  9. Xuat file txt                                        |";
+    gotoxy(2,24);   cout<<"|----------------------------------------------------------|";
+    gotoxy(2,25);	cout<<"|  II.  DANG KI HOC PHAN                                   |";
+    gotoxy(2,26);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,27);	cout<<"|  10. Nhap hoc phan muon dang ki                          |";
+    gotoxy(2,28);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,29);	cout<<"|  11. In ra man hinh tong hoc phi                         |";
+    gotoxy(2,30);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,31);	cout<<"|  12. Huy hoc phan da dang ki                             |";
+    gotoxy(2,32);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,33);	cout<<"|  13. Thoat chuong trinh                                  |";
+    gotoxy(2,34);	cout<<"|----------------------------------------------------------|";
+    gotoxy(2,35);	cout<<"************************************************************";
+    gotoxy(2,37);cout<<"Nhap tuy chon: ";     
 	cin>>key; 
     switch(key){
     	case (1):
@@ -570,7 +564,7 @@ int main()
     		system("cls");
 	        break;
 		case (2):
-			list.XuatDS();
+			list.xuat();
 			system("pause>null");
 			system("cls");
 			break;
@@ -594,7 +588,7 @@ int main()
 			system("cls");
 			break;
 		case(7):
-			list.XuatDS();
+			list.xuat();
 			system("pause>null");
 			system("cls");
 			break;
@@ -610,21 +604,24 @@ int main()
 			break;
 		case (10):
 			list.DKHP();
+			system("pause>null");
 	       	system("cls");
 			break;
 	    case (11):
 			list.InDKHP();
 			system("pause>null");
 			system("cls");
-			break;	
+			break;
 		case(12):
+			list.xoahp();
+			system("pause>null");
+			system("cls");
+			break;
+		case(13):
+			theend();
 			default: c = false;
-			break; 
+			break;
 		};
 	}
 	return 0;
 }
-
-
-
-
